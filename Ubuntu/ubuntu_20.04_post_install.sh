@@ -12,6 +12,8 @@ BASIC_FOLDERS=(
 
 APT_SOFTWARES=(
   snapd
+  gnome-tweaks
+  git
   steam-installer
 )
 
@@ -41,7 +43,6 @@ echo "Downloading .deb softwares"
 mkdir "$DOWNLOAD_FOLDER"
 for software in ${DEB_SOFTWARES[@]}; do
     wget -c "$software" -P "$DOWNLOAD_FOLDER"
-  fi
 done
 
 sudo dpkg -i $DOWNLOAD_FOLDER/*.deb
@@ -60,16 +61,19 @@ done
 echo "Downloading snap softwares"
 for software in ${SNAP_SOFTWARES[@]}; do
     sudo snap "$software"
-  fi
 done
 
 # ---------------------------------------------------------------------- #
 
 # ----------------------------- SETUP ENVIRONMENT ------------------------------- #
+
+echo "Setup git variables"
+git config --global user.name $0
+git config --global user.email $1
+
 echo "Creating basic folders"
 for folder in ${BASIC_FOLDERS[@]}; do
     mkdir $HOME/"$folder"
-  fi
 done
 
 # ----------------------------- POST INSTALLATION----------------------------- #
