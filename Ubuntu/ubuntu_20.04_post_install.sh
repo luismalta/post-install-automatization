@@ -38,6 +38,11 @@ PPA_LIST=(
 
 sudo apt update -y
 
+sudo rm /var/lib/dpkg/lock-frontend
+sudo rm /var/cache/apt/archives/lock
+
+sudo dpkg --add-architecture i386
+
 # Installing deb softwares #
 echo "Downloading .deb softwares"
 mkdir "$DOWNLOAD_FOLDER"
@@ -51,7 +56,7 @@ sudo dpkg -i $DOWNLOAD_FOLDER/*.deb
 echo "Downloading apt softwares"
 for software in ${APT_SOFTWARES[@]}; do
   if ! dpkg -l | grep -q $software; then
-    apt install "$software" -y
+    sudo apt install "$software" -y
   else
     echo "[Already installed] - $software"
   fi
@@ -60,7 +65,7 @@ done
 # Installing snap softwares ##
 echo "Downloading snap softwares"
 for software in ${SNAP_SOFTWARES[@]}; do
-    sudo snap "$software"
+    sudo snap install "$software"
 done
 
 # ---------------------------------------------------------------------- #
